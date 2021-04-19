@@ -6,10 +6,14 @@ class Game:
         self.TOTAL_PHASES = 6 
         self.PHASES = ['Draw', 'Stand by', 'Main1', 'Battle', 'Main2', 'End']
 
+    def check_victory_condition(self):
+        return self.players[0].lp <= 0 or self.players[1].lp <= 0
+    
     def start(self):
-        while self.players[0].lp > 0 or self.players[1].lp > 0:
+        # A method/function would be better        
+        while not self.check_victory_condition():
             print(f'Starting turn for Player: {"0" if self.current_player == 0 else "1"}')
-            for phase_number in range(self.TOTAL_PHASES):
+            for phase_number in range(self.TOTAL_PHASES):                
                 print(f'Entring {self.PHASES[phase_number]} Phase')
                 
                 # Check Triggers
@@ -36,6 +40,8 @@ class Game:
                 if update != '':
                     self.players[(self.current_player + 1) % 2].update_lp(int(update))
 
+                if self.check_victory_condition():
+                    break
 
             self.current_player = (self.current_player + 1) % 2
     
